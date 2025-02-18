@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import MinorDataProductDetail from "./MinorDataProductDetail";
+import MinorDataProductDetail from "./MinorDetailSection/MinorDataProductDetail";
 import ProductDetailPrice from "./ProductDetailPrice";
 
-import FetchUserData from "../util/utilUsers/FetchUserData";
+import FetchUserData from "../../util/utilUsers/FetchUserData";
 // import PostCartItem from "../util/utilCarts/PostCartItem";
+import useFetchPromotionItem from "../../util/FetchPromotionItem";
+import useFetchPromotionProductRequest from "../../util/FetchPromotionProductRequest";
 
 const MainProductDetail = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
@@ -37,17 +39,17 @@ const MainProductDetail = ({ product }) => {
   const PostCartItem = async () => {
     const cartId = cart.id;
     const productId = product.id;
-    const totalPrice = product.price * quantity;
 
     try {
       const response = await fetch("http://localhost:8080/api/cart-items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartId, productId, quantity, totalPrice }),
+        body: JSON.stringify({ cartId, productId, quantity }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to Post Cart Item");
+        const errorText = await response.text();
+        throw new Error(errorText);
       }
 
       const data = await response.json();

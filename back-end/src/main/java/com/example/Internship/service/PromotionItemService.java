@@ -42,9 +42,11 @@ public class PromotionItemService {
         return promotionItemDtoList.stream().map((promotionItem) -> promotionItemMapper.mapToPromotionItemDto(promotionItem)).collect(Collectors.toList());
     }
 
-    public List<PromotionItemDto> getPromotionItemsByProductId(Integer id){
-        List<PromotionItem> promotionItemDtoList = repo.findByProductId(id);
-        return promotionItemDtoList.stream().map((promotionItem) -> promotionItemMapper.mapToPromotionItemDto(promotionItem)).collect(Collectors.toList());
+    public PromotionItemDto getPromotionItemsByProductId(Integer id){
+        PromotionItem promotionItem = repo.findFirstByProductId(id);
+        if(promotionItem == null)
+            return null;
+        return promotionItemMapper.mapToPromotionItemDto(promotionItem);
     }
 
 }

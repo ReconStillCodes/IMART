@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import FetchPromotionItem from "../util/FetchPromotionItem";
-import FetchPromotionProductRequest from "../util/FetchPromotionProductRequest";
+import FetchPromotionItem from "../../util/FetchPromotionItem";
+import FetchPromotionProductRequest from "../../util/FetchPromotionProductRequest";
 
 import NormalProductDetailPrice from "./NormalProductDetailPrice";
 import PromotionProductDetailPrice from "./PromotionProductDetailPrice";

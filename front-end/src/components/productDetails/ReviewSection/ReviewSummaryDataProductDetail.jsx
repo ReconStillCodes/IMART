@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import RatingCircularBar from "./RatingCircularBar";
-import RatingStar from "./RatingStar";
+import RatingStar from "../miscellaneous/RatingStar";
 
-import FetchSatisfyPercentage from "../util/FetchSatisfyPercentage";
-import CountReviewProductDetail from "./CountReviewProductDetail";
+import FetchSatisfyPercentage from "../../util/FetchSatisfyPercentage";
+import CountReviewProductDetail from "../DetailSection/MinorDetailSection/CountReviewProductDetail";
 
 const ReviewDataProductDetail = ({ rating, productId }) => {
   return (

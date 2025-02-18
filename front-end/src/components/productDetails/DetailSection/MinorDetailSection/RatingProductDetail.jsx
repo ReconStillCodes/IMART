@@ -3,9 +3,9 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
 
-import RatingStar from "./RatingStar";
+import RatingStar from "../../miscellaneous/RatingStar";
 
-import FetchingRatingValueProduct from "../util/FetchRatingValueProduct";
+import FetchingRatingValueProduct from "../../../util/FetchRatingValueProduct";
 
 const RatingProductDetail = ({ productId }) => {
   const { rating, loading, error } = FetchingRatingValueProduct(productId);

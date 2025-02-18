@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PromotionItemRepository extends JpaRepository<PromotionItem, Integer> {
     List<PromotionItem> findByPromotionId(Integer id);
-    List<PromotionItem> findByProductId(Integer id);
+    PromotionItem findFirstByProductId(Integer id);
 }

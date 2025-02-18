@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
 
-import FetchCountReviewsByProductIdAndRating from "../util/FetchCountReviewsByProductIdAndRating";
+import FetchCountReviewsByProductIdAndRating from "../../util/FetchCountReviewsByProductIdAndRating";
 
 const ReviewQuantityData = ({ productId, rating, count }) => {
   const { countRating, loading } = FetchCountReviewsByProductIdAndRating(

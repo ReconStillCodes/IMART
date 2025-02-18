@@ -16,10 +16,11 @@ const useFetchPromotionItem = (productId) => {
         }
 
         const data = await response.json();
-        setPromotionItem(data[0]);
+        setPromotionItem(data);
       } catch (err) {
+        console.log({ productId });
         setError(err);
-        console.error("Error fetching promotion Items: ", err);
+        // console.error("Error fetching promotion Items: ", err);
       } finally {
         setLoading(false);
       }

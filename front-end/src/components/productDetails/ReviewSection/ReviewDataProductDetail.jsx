@@ -5,7 +5,7 @@ import ReviewSummaryDataProductDetail from "./ReviewSummaryDataProductDetail";
 import ReviewQuantityDataProductDetail from "./ReviewQuantityDataProductDetail";
 import ReviewFilterDataProductDetail from "./ReviewFilterDataProductDetail";
 
-import FetchingRatingValueProduct from "../util/FetchRatingValueProduct";
+import FetchingRatingValueProduct from "../../util/FetchRatingValueProduct";
 
 const ReviewDataProductDetail = ({ reviews, productId }) => {
   const { rating, loading, error } = FetchingRatingValueProduct(productId);

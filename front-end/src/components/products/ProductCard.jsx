@@ -10,14 +10,6 @@ const ProductCard = ({ product }) => {
   const { promotionItem, loading, error } = FetchPromotionItem(product.id);
   const promotionProductRequest = FetchPromotionProductRequest(promotionItem);
 
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
-
   return (
     <Link to={`/product/${product.id}`} className="text-decoration-none">
       <div

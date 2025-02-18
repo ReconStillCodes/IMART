@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar/NavBar";
 import FetchProductById from "./util/FetchProductById";
-import RedirectProductLink from "./productDetails/RedirectProductLink";
-import MainProductDetail from "./productDetails/MainProductDetail";
-import ImageProductDetail from "./productDetails/ImageProductDetail";
-import ReviewProductDetail from "./productDetails/ReviewProductDetail";
+import RedirectProductLink from "./productDetails/miscellaneous/RedirectProductLink";
+import MainProductDetail from "./productDetails/DetailSection/MainProductDetail";
+import ImageProductDetail from "./productDetails/miscellaneous/ImageProductDetail";
+import ReviewProductDetail from "./productDetails/ReviewSection/ReviewProductDetail";
 
 const ProductDetailPage = () => {
   const { productId } = useParams();

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import ReviewCard from "./ReviewCard";
 import ReviewDataProductDetail from "./ReviewDataProductDetail";
 
-import FetchAllReviews from "../util/FetchAllReviews";
+import FetchAllReviews from "../../util/FetchAllReviews";
 
 const ReviewProductDetail = ({ productId }) => {
   const { reviews, loading, error } = FetchAllReviews(productId);

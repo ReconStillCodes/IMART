@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import ReviewQuantityData from "./ReviewQuantityData";
 
-import FetchCountReviewsByProductId from "../util/FetchCountReviewsByProductId";
+import FetchCountReviewsByProductId from "../../util/FetchCountReviewsByProductId";
 
 const ReviewQuantityDataProductDetail = ({ productId }) => {
   const { count, loading } = FetchCountReviewsByProductId(productId);

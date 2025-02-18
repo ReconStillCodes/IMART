@@ -35,5 +35,9 @@ public class CartItemController {
         return ResponseEntity.ok(cartItemDtoList);
     }
 
-
+    @GetMapping("/cartId/{cartId}")
+    public ResponseEntity<List<CartItemDto>> getCartItemByCartId(@PathVariable("cartId") Integer cartId){
+        List<CartItemDto> cartItemDtoList = cartItemService.getCartItemByCartId(cartId);
+        return ResponseEntity.ok(cartItemDtoList);
+    }
 }

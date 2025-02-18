@@ -56,9 +56,9 @@ public class PromotionItemController {
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<List<PromotionItemDto>> getPromotionItemByProductId(@PathVariable("id") Integer id){
-        List<PromotionItemDto> promotionItemDtoList = promotionItemService.getPromotionItemsByProductId(id);
-        return ResponseEntity.ok( promotionItemDtoList);
+    public ResponseEntity<PromotionItemDto> getPromotionItemByProductId(@PathVariable("id") Integer id){
+        PromotionItemDto promotionItemDto = promotionItemService.getPromotionItemsByProductId(id);
+        return ResponseEntity.ok( promotionItemDto);
     }
 
     @GetMapping("/promotion-product-request/{productId}/{promotionId}")
