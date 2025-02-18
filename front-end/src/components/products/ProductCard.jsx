@@ -3,12 +3,27 @@ import { Link } from "react-router-dom";
 import PromotionProductCard from "./PomotionProductCard";
 import ProductPrice from "./ProductPrice";
 import ProductRating from "./ProductRating";
-import FetchPromotionItem from "../util/FetchPromotionItem";
-import FetchPromotionProductRequest from "../util/FetchPromotionProductRequest";
+
+import { fetchPromotionItemByProductId } from "../utility/promotionItemUtility/fetchPromotionItemByProductId";
+import { fetchPromotionProductRequest } from "../utility/promotionItemUtility/fetchPromotionProductRequest";
 
 const ProductCard = ({ product }) => {
-  const { promotionItem, loading, error } = FetchPromotionItem(product.id);
-  const promotionProductRequest = FetchPromotionProductRequest(promotionItem);
+  const [promotionItem, setPromotionItem] = useState(null);
+  const [promotionProductRequest, setPromotionProductRequest] = useState(null);
+
+  useEffect(() => {
+    fetchPromotionItemByProductId(product.id, setPromotionItem);
+  }, []);
+
+  useEffect(() => {
+    if (promotionItem) {
+      fetchPromotionProductRequest(
+        promotionItem.productId,
+        promotionItem.promotionId,
+        setPromotionProductRequest
+      );
+    }
+  }, [promotionItem]);
 
   return (
     <Link to={`/product/${product.id}`} className="text-decoration-none">

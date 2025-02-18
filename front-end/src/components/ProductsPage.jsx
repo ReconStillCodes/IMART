@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
+
 import NavBar from "./NavBar/NavBar";
 import ProductCard from "./products/ProductCard";
-import SearchInput from "./filterProducts/SearchInput";
-import CategoryDDL from "./filterProducts/CategoryDDL";
-import PriceInput from "./filterProducts/PriceInput";
+import SearchInput from "./products/filterProducts/SearchInput";
+import CategoryDDL from "./products/filterProducts/CategoryDDL";
+import PriceInput from "./products/filterProducts/PriceInput";
 import emptyBoxImage from "../assets/no-item-found.png";
+
+import { fetchAllProducts } from "./utility/productUtility/fetchAllProducts";
+import { postProductSearch } from "./utility/productUtility/postProductSearch";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -15,54 +19,19 @@ const ProductsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/products");
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-
-        const data = await response.json();
-        setProducts(data);
-      } catch (err) {
-        console.error("Error fetching products: ", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
+    fetchAllProducts(setProducts, setLoading);
   }, []);
 
-  const handleSearch = async () => {
-    try {
-      var name = searchTerm;
-      var categoryId = category;
-
-      const response = await fetch(
-        "http://localhost:8080/api/products/search",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, minPrice, maxPrice, categoryId }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Error fetching search products");
-      }
-
-      const data = await response.json();
-      setProducts(data);
-    } catch (err) {
-      console.error("Error fetching search products: ", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    handleSearch();
+    let name = searchTerm;
+    postProductSearch(
+      name,
+      minPrice,
+      maxPrice,
+      category,
+      setProducts,
+      setLoading
+    );
   }, [searchTerm, category, minPrice, maxPrice]);
 
   return (

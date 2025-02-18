@@ -5,18 +5,14 @@ import ReviewSummaryDataProductDetail from "./ReviewSummaryDataProductDetail";
 import ReviewQuantityDataProductDetail from "./ReviewQuantityDataProductDetail";
 import ReviewFilterDataProductDetail from "./ReviewFilterDataProductDetail";
 
-import FetchingRatingValueProduct from "../../util/FetchRatingValueProduct";
+import { fetchRatingByProductId } from "../../utility/reviewUtility/fetchRatingByProductId";
 
 const ReviewDataProductDetail = ({ reviews, productId }) => {
-  const { rating, loading, error } = FetchingRatingValueProduct(productId);
+  const [rating, setRating] = useState(null);
 
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
+  useEffect(() => {
+    fetchRatingByProductId(productId, setRating);
+  }, []);
 
   return (
     <div className="container card h-100 shadow border-0 p-3 d-flex flex-row justify-between flex-wrap">

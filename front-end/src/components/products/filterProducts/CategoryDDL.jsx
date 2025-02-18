@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from "react";
 
+import { fetchAllCategories } from "../../utility/categoryUtility/fetchAllCategories";
+
 const CategoryDDL = ({ category, setCategory }) => {
   const [categoryList, setCategoryList] = useState([]);
 
   useEffect(() => {
-    const fetchCategoryList = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/api/product-categories"
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch category List");
-        }
-
-        const data = await response.json();
-        setCategoryList(data);
-      } catch (err) {
-        console.error("Error fetching category List: ", err);
-      }
-    };
-    fetchCategoryList();
+    fetchAllCategories(setCategoryList);
   }, []);
 
   return (
@@ -44,7 +30,7 @@ const CategoryDDL = ({ category, setCategory }) => {
           </option>
         ))
       ) : (
-        <option disabled>Loading categories...</option>
+        <option disabled></option>
       )}
     </select>
   );

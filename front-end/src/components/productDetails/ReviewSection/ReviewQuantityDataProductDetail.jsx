@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import ReviewQuantityData from "./ReviewQuantityData";
 
-import FetchCountReviewsByProductId from "../../util/FetchCountReviewsByProductId";
+import { fetchReviewCountByProductId } from "../../utility/reviewUtility/fetchReviewCountByProductId";
 
 const ReviewQuantityDataProductDetail = ({ productId }) => {
-  const { count, loading } = FetchCountReviewsByProductId(productId);
+  const [count, setCount] = useState(null);
 
-  if (loading) {
-    return <div></div>;
-  }
+  useEffect(() => {
+    fetchReviewCountByProductId(productId, setCount);
+  }, []);
 
   return (
     <div

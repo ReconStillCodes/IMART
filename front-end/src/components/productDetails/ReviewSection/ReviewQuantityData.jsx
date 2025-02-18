@@ -3,17 +3,14 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
 
-import FetchCountReviewsByProductIdAndRating from "../../util/FetchCountReviewsByProductIdAndRating";
+import { fetchReviewCountByProductIdAndRating } from "../../utility/reviewUtility/fetchReviewCountByProductIdAndRating";
 
 const ReviewQuantityData = ({ productId, rating, count }) => {
-  const { countRating, loading } = FetchCountReviewsByProductIdAndRating(
-    productId,
-    rating
-  );
+  const [countRating, setCountRating] = useState(null);
 
-  if (loading) {
-    return <div></div>;
-  }
+  useEffect(() => {
+    fetchReviewCountByProductIdAndRating(productId, rating, setCountRating);
+  }, []);
 
   const percentage = (countRating / count) * 100;
 

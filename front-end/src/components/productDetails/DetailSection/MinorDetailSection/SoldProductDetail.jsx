@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from "react";
 
+import { fetchOrderItemQuantity } from "../../../utility/orderItemUtility/fetchOrderItemQuantity";
+
 const SoldProductDetail = ({ productId }) => {
   const [quantity, setQuantity] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const fetchQuantity = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/order-items/product-quantity/${productId}`
-      );
+  useEffect(() => {
+    fetchOrderItemQuantity(productId, setQuantity);
+  }, []);
 
-      if (!response.ok) {
-        throw new Error("Error fetching Product Quantity");
-      }
-
-      const data = await response.json();
-      setQuantity(data);
-    } catch (err) {
-      console.error("Failed to fetch Product Quantity : ", err);
-    } finally {
+  useEffect(() => {
+    if (quantity >= 0) {
       setLoading(false);
     }
-  };
+  }, [quantity]);
 
   const formatQuantity = (quantity) => {
     if (quantity >= 1000000) {
@@ -32,10 +25,6 @@ const SoldProductDetail = ({ productId }) => {
       return quantity;
     }
   };
-
-  useEffect(() => {
-    fetchQuantity();
-  }, [productId]);
 
   return (
     <div>{loading ? null : <span>{formatQuantity(quantity)} Sold</span>}</div>

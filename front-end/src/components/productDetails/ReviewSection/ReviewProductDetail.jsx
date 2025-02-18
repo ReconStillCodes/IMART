@@ -3,18 +3,14 @@ import React, { useEffect, useState } from "react";
 import ReviewCard from "./ReviewCard";
 import ReviewDataProductDetail from "./ReviewDataProductDetail";
 
-import FetchAllReviews from "../../util/FetchAllReviews";
+import { fetchAllReviews } from "../../utility/reviewUtility/fetchAllReviews";
 
 const ReviewProductDetail = ({ productId }) => {
-  const { reviews, loading, error } = FetchAllReviews(productId);
+  const [reviews, setReviews] = useState([]);
 
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
+  useEffect(() => {
+    fetchAllReviews(productId, setReviews);
+  }, []);
 
   return (
     <div className="w-100 mt-5">

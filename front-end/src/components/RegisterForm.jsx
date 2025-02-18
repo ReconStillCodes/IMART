@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import AuthInput from "./Auth/AuthInput";
 import AuthError from "./Auth/AuthError";
 import AuthButton from "./Auth/AuthButton";
 import AuthLink from "./Auth/AuthLink";
 import AuthTextArea from "./Auth/AuthTextArea";
+
+import { postUser } from "./utility/userUtility/postUser";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState("");
@@ -12,8 +15,8 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [address, setAddress] = useState("");
-  const [role, setRole] = useState("");
   const [error, setError] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -26,25 +29,17 @@ const RegisterForm = () => {
       return;
     }
 
-    setRole("guest");
+    postUser(
+      username,
+      email,
+      password,
+      address,
+      "user",
+      setError,
+      setIsSuccess
+    );
 
-    try {
-      const response = await fetch("http://localhost:8080/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password, address, role }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Invalid Register Crendentials");
-      }
-
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-      navigate("/login");
-    } catch (err) {
-      setError(err.message);
-    }
+    navigate("/login");
   };
 
   return (

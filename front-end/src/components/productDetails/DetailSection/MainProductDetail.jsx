@@ -3,70 +3,32 @@ import React, { useEffect, useState } from "react";
 import MinorDataProductDetail from "./MinorDetailSection/MinorDataProductDetail";
 import ProductDetailPrice from "./ProductDetailPrice";
 
-import FetchUserData from "../../util/utilUsers/FetchUserData";
-// import PostCartItem from "../util/utilCarts/PostCartItem";
-import useFetchPromotionItem from "../../util/FetchPromotionItem";
-import useFetchPromotionProductRequest from "../../util/FetchPromotionProductRequest";
+import { fetchUserBySession } from "../../utility/userUtility/fetchUserBySession";
+import { fetchActiveCart } from "../../utility/cartUtility/fetchActiveCart";
+import { postCartItem } from "../../utility/cartItemUtility/postCartItem";
+import { postCart } from "../../utility/cartUtility/postCart";
 
 const MainProductDetail = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
-  const user = FetchUserData("IMART_SESSION");
+  const [user, setUser] = useState(null);
   const [cart, setCart] = useState(null);
 
-  const fetchCart = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/carts/userId/${user.id}/status/active`
-      );
-
-      if (!response) {
-        throw new Error("Failed fetching cart by user Id and Status");
-      }
-
-      const data = await response.json();
-      setCart(data);
-    } catch (err) {
-      console.error("Failed fetching cart by user Id and Status : ", err);
-    }
-  };
+  useEffect(() => {
+    fetchUserBySession("IMART_SESSION", setUser);
+  }, []);
 
   useEffect(() => {
     if (user) {
-      fetchCart();
+      fetchActiveCart(user.id, setCart);
     }
   }, [user]);
 
-  const PostCartItem = async () => {
-    const cartId = cart.id;
-    const productId = product.id;
-
-    try {
-      const response = await fetch("http://localhost:8080/api/cart-items", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartId, productId, quantity }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
-      }
-
-      const data = await response.json();
-      console.log(data);
-    } catch (err) {
-      console.error("Failed to Post Cart Item ", err);
-    }
-  };
-
   const handleCart = () => {
     if (!cart) {
-      console.log("Cart Doesn't exist");
-      return;
+      postCart(user.id, 0, "active", setCart);
     }
 
-    PostCartItem();
-    // console.log(cart);
+    postCartItem(cart.id, product.id, quantity);
   };
 
   return (

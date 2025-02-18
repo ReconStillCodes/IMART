@@ -4,64 +4,41 @@ import NavBar from "./NavBar/NavBar";
 import CartItemContainer from "./carts/CartItemContainer";
 import PriceContainer from "./carts/PriceContainer";
 
-import FetchUserData from "./util/utilUsers/FetchUserData";
+import { fetchUserBySession } from "./utility/userUtility/fetchUserBySession";
+import { fetchActiveCart } from "./utility/cartUtility/fetchActiveCart";
+import { fetchCartItemByCartId } from "./utility/cartItemUtility/fetchCartItemByCartId";
 
 const CartPage = () => {
-  const user = FetchUserData("IMART_SESSION");
+  const [user, setUser] = useState(null);
+
   const [cart, setCart] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
   const [loadingCart, setLoadingCart] = useState(true);
+
+  const [cartItems, setCartItems] = useState([]);
   const [loadingCartItems, setLoadingCartItems] = useState(true);
 
-  const fetchCart = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/carts/userId/${user.id}/status/active`
-      );
-
-      if (!response) {
-        throw new Error("Failed fetching cart by user Id and Status");
-      }
-
-      const data = await response.json();
-      setCart(data);
-    } catch (err) {
-      console.error("Failed fetching cart by user Id and Status : ", err);
-    } finally {
-      setLoadingCart(false);
-    }
-  };
-
-  const fetchCartItems = async () => {
-    if (cart) {
-      try {
-        const response = await fetch(
-          `http://localhost:8080/api/cart-items/cartId/${cart.id}`
-        );
-
-        if (!response) {
-          throw new Error("Failed fetching all cart items: ");
-        }
-
-        const data = await response.json();
-        setCartItems(data);
-      } catch (err) {
-        console.error("Failed fetching all cart items: ", err);
-      } finally {
-        setLoadingCartItems(false);
-      }
-    }
-  };
+  useEffect(() => {
+    fetchUserBySession("IMART_SESSION", setUser);
+  }, []);
 
   useEffect(() => {
     if (user) {
-      fetchCart();
+      fetchActiveCart(user.id, setCart);
     }
   }, [user]);
 
   useEffect(() => {
-    fetchCartItems();
+    if (cart) {
+      setLoadingCart(false);
+      fetchCartItemByCartId(cart.id, setCartItems, setLoadingCartItems);
+    }
   }, [cart]);
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      setLoadingCartItems(false);
+    }
+  }, [cartItems]);
 
   return (
     <div

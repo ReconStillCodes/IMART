@@ -5,33 +5,22 @@ import AuthError from "./Auth/AuthError";
 import AuthButton from "./Auth/AuthButton";
 import AuthLink from "./Auth/AuthLink";
 
+import { postLogin } from "./utility/userUtility/postLogin";
+
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    try {
-      const response = await fetch("http://localhost:8080/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Invalid Login Crendentials");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      localStorage.setItem("IMART_SESSION", data.id);
+    postLogin(email, password, setError, setIsSuccess);
+    if (isSuccess) {
       navigate("/");
-    } catch (err) {
-      setError(err.message);
     }
   };
 

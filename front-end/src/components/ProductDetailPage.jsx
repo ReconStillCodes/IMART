@@ -2,21 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar/NavBar";
-import FetchProductById from "./util/FetchProductById";
 import RedirectProductLink from "./productDetails/miscellaneous/RedirectProductLink";
 import MainProductDetail from "./productDetails/DetailSection/MainProductDetail";
 import ImageProductDetail from "./productDetails/miscellaneous/ImageProductDetail";
 import ReviewProductDetail from "./productDetails/ReviewSection/ReviewProductDetail";
 
+import { fetchProductById } from "./utility/productUtility/fetchProductById";
+
 const ProductDetailPage = () => {
   const { productId } = useParams();
-  const { product, loading, error } = FetchProductById(productId);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProductById(productId, setProduct);
+  }, []);
+
+  useEffect(() => {
+    if (product) {
+      setLoading(false);
+    }
+  }, [product]);
 
   if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
     return <div></div>;
   }
 

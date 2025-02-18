@@ -1,31 +1,20 @@
 import React, { useEffect, useState } from "react";
 
+import { fetchReviewCountByProductId } from "../../../utility/reviewUtility/fetchReviewCountByProductId";
+
 const CountReviewProductDetail = ({ productId }) => {
-  const [countReview, setCountReview] = useState(0);
+  const [countReview, setCountReview] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchCountReview = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/reviews/count/${productId}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Error fetching Count Review");
-      }
-
-      const data = await response.json();
-      setCountReview(data);
-    } catch (err) {
-      console.error("Failed to fetch Count Review : ", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    fetchReviewCountByProductId(productId, setCountReview);
+  }, []);
 
   useEffect(() => {
-    fetchCountReview();
-  }, [productId]);
+    if (countReview) {
+      setLoading(false);
+    }
+  }, [countReview]);
 
   const formatCount = (quantity) => {
     if (quantity >= 1000000) {

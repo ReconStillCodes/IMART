@@ -1,11 +1,17 @@
-import React, { act } from "react";
+import React, { act, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import FetchUserData from "../util/utilUsers/FetchUserData";
+
 import NavBarLink from "./NavBarLink";
 
+import { fetchUserBySession } from "../utility/userUtility/fetchUserBySession";
+
 const NavBar = ({ activePage }) => {
-  const userData = FetchUserData("IMART_SESSION");
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchUserBySession("IMART_SESSION", setUserData);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("IMART_SESSION");

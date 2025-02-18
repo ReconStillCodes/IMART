@@ -1,25 +1,14 @@
-import React from "react";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
-
+import React, { useState, useEffect } from "react";
 import RatingStar from "../../miscellaneous/RatingStar";
 
-import FetchingRatingValueProduct from "../../../util/FetchRatingValueProduct";
+import { fetchRatingByProductId } from "../../../utility/reviewUtility/fetchRatingByProductId";
 
 const RatingProductDetail = ({ productId }) => {
-  const { rating, loading, error } = FetchingRatingValueProduct(productId);
+  const [rating, setRating] = useState(null);
 
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
-
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 !== 0;
+  useEffect(() => {
+    fetchRatingByProductId(productId, setRating);
+  }, []);
 
   return (
     <div className="d-flex gap-2 align-items-center">
