@@ -8,6 +8,7 @@ import PriceItemContainer from "./PriceComponents/PriceItemContainer";
 import PaymentDDL from "./PriceComponents/PaymentDDL";
 
 import { putCartCalculateTotalPrice } from "../utility/cartUtility/putCartCalculateTotalPrice";
+import { putCheckout } from "../utility/orderItemUtility/putCheckout";
 
 const PriceContainer = () => {
   const { cart, setCart, cartItems } = useCart();
@@ -20,6 +21,14 @@ const PriceContainer = () => {
   useEffect(() => {
     putCartCalculateTotalPrice(cart.id, setCart);
   }, [cartItems]);
+
+  const handleCheckout = () => {
+    try {
+      putCheckout(cart.id, payment);
+    } catch (err) {
+      console.log("failed to checkout ", err);
+    }
+  };
 
   return (
     <div className="" style={{ width: "40%" }}>
@@ -48,6 +57,7 @@ const PriceContainer = () => {
         <button
           className="btn btn-primary w-100 p-2 fw-bold"
           style={{ backgroundColor: "black" }}
+          onClick={() => handleCheckout()}
         >
           Check Out
         </button>

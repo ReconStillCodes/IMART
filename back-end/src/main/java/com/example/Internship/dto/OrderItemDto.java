@@ -30,6 +30,13 @@ public class OrderItemDto {
         this.updatedAt = updatedAt;
     }
 
+    public OrderItemDto(Integer productId, Integer orderId, Integer quantity, Double totalPrice) {
+        this.productId = productId;
+        this.orderId = orderId;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+    }
+
     public Integer getId() {
         return id;
     }

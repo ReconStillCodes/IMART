@@ -45,9 +45,9 @@ public class CartService {
     }
 
     public CartDto getCartByUserIdAndStatus(Integer userId, String status){
-        Optional<Cart> cart = repo.findByUserIdAndStatusIgnoreCase(userId, status);
-        if(cart.isEmpty()) return null;
-        return cartMapper.mapToCartDto(cart.get());
+        return repo.findByUserIdAndStatusIgnoreCase(userId, status)
+                .map(cartMapper::mapToCartDto)
+                .orElse(null);
     }
 
     public CartDto updateCart(CartDto cartDto){

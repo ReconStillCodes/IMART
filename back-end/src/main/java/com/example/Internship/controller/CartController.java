@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -36,9 +37,15 @@ public class CartController {
     }
 
     @GetMapping("userId/{userId}/status/{status}")
-    public ResponseEntity<CartDto> getCartByUserIdAndStatus(@PathVariable("userId") Integer userId,@PathVariable("status") String status){
+    public ResponseEntity<?> getCartByUserIdAndStatus(@PathVariable("userId") Integer userId,@PathVariable("status") String status){
         CartDto cartDto = cartService.getCartByUserIdAndStatus(userId, status);
-        return ResponseEntity.ok(cartDto);
+
+        if (cartDto != null) {
+            return ResponseEntity.ok(cartDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("message", "Cart not found for userId: " + userId));
+        }
     }
 
     @PutMapping("/calculate-total-price/{id}")

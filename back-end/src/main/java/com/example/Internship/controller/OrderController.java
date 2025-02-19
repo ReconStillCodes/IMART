@@ -1,6 +1,8 @@
 package com.example.Internship.controller;
 
+import com.example.Internship.dto.CheckoutRequest;
 import com.example.Internship.dto.OrderDto;
+import com.example.Internship.facade.CheckoutFacade;
 import com.example.Internship.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,9 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private CheckoutFacade checkoutFacade;
 
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto){
@@ -31,6 +36,12 @@ public class OrderController {
     public ResponseEntity<List<OrderDto>> getAllOrders(){
         List<OrderDto> orderDtoList = orderService.getAllOrders();
         return ResponseEntity.ok(orderDtoList);
+    }
+
+    @PostMapping("/checkout")
+    public ResponseEntity<String> checkOut(@RequestBody CheckoutRequest request){
+        OrderDto orderDto = checkoutFacade.checkOut(request);
+        return ResponseEntity.ok("Checkout Succeed");
     }
 
 }

@@ -12,6 +12,7 @@ const MainProductDetail = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState(null);
+  const [isActiveChecked, setActiveChecked] = useState(false);
 
   useEffect(() => {
     fetchUserBySession("IMART_SESSION", setUser);
@@ -19,16 +20,24 @@ const MainProductDetail = ({ product }) => {
 
   useEffect(() => {
     if (user) {
-      fetchActiveCart(user.id, setCart);
+      fetchActiveCart(user.id, setCart, setActiveChecked);
     }
   }, [user]);
 
-  const handleCart = () => {
-    if (!cart) {
-      postCart(user.id, 0, "active", setCart);
+  useEffect(() => {
+    if (user) {
+      if (!cart) {
+        postCart(user.id, 0, "active", setCart);
+      }
     }
+  }, [isActiveChecked]);
 
-    postCartItem(cart.id, product.id, quantity);
+  const handleCart = () => {
+    if (user && cart) {
+      postCartItem(cart.id, product.id, quantity);
+    } else {
+      console.err("User has not logged in");
+    }
   };
 
   return (

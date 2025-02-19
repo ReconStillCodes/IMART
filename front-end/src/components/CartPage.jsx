@@ -10,9 +10,11 @@ import { fetchUserBySession } from "./utility/userUtility/fetchUserBySession";
 import { fetchActiveCart } from "./utility/cartUtility/fetchActiveCart";
 import { fetchCartItemByCartId } from "./utility/cartItemUtility/fetchCartItemByCartId";
 import { putCartCalculateTotalPrice } from "./utility/cartUtility/putCartCalculateTotalPrice";
+import { postCart } from "./utility/cartUtility/postCart";
 
 const CartPage = () => {
   const [user, setUser] = useState(null);
+  const [isActiveChecked, setActiveChecked] = useState(false);
 
   const {
     cart,
@@ -31,9 +33,17 @@ const CartPage = () => {
 
   useEffect(() => {
     if (user) {
-      fetchActiveCart(user.id, setCart);
+      fetchActiveCart(user.id, setCart, setActiveChecked);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      if (!cart) {
+        postCart(user.id, 0, "active", setCart);
+      }
+    }
+  }, [isActiveChecked]);
 
   useEffect(() => {
     if (cart) {
@@ -73,8 +83,16 @@ const CartPage = () => {
           className="w-100 container d-flex flex-row gap-5 "
           style={{ paddingTop: "80px" }}
         >
-          <CartItemContainer />
-          <PriceContainer />
+          {cartItems.length > 0 ? (
+            <>
+              <CartItemContainer />
+              <PriceContainer />
+            </>
+          ) : (
+            <div className="w-100 d-flex justify-content-center">
+              <img src="src/assets/no-item-found.png" alt="No Item Found" />
+            </div>
+          )}
         </div>
       )}
     </div>
