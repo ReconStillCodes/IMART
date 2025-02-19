@@ -96,5 +96,40 @@ public class CartItemService {
         return cartItemList.stream().map((cartItem) -> cartItemMapper.mapToCartItemDto(cartItem)).collect(Collectors.toList());
     }
 
+    public CartItemDto updateCartItem(CartItemDto cartItemDto){
+        CartItem cartItem = repo.findById(cartItemDto.getId()).orElseThrow(()->new ResourceNotFoundException("Cart item does not Exist with id : " + cartItemDto.getId()));
+
+        CartItem newCartItem = cartItemMapper.mapToCartItem(cartItemDto);
+
+        cartItem.setCart(newCartItem.getCart());
+        cartItem.setProduct(newCartItem.getProduct());
+        cartItem.setQuantity(newCartItem.getQuantity());
+        cartItem.setTotalPrice(newCartItem.getTotalPrice());
+
+        CartItem savedCartItem = repo.save(cartItem);
+
+        return cartItemMapper.mapToCartItemDto(cartItem);
+    }
+
+    public CartItemDto updateQuantity(Integer id, Integer change){
+        CartItemDto cartItemDto = getCartItemById(id);
+        ProductDto productDto = productService.getProductById(cartItemDto.getProductId());
+
+        int newQuantity = cartItemDto.getQuantity() + change;
+        if(newQuantity <= 0 || newQuantity > productDto.getStock())
+            return cartItemDto;
+
+        cartItemDto.setQuantity(newQuantity);
+        cartItemDto.setTotalPrice(calculateTotalPrice(cartItemDto));
+        return updateCartItem(cartItemDto);
+    }
+
+    public void deleteCartItem(Integer id){
+        CartItem cartItem = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Cart item does not Exist with id : " + id));
+
+        repo.delete(cartItem);
+    }
+
+
 
 }

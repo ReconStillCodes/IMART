@@ -4,18 +4,26 @@ import NavBar from "./NavBar/NavBar";
 import CartItemContainer from "./carts/CartItemContainer";
 import PriceContainer from "./carts/PriceContainer";
 
+import { useCart } from "./carts/CartContext/CartContext";
+
 import { fetchUserBySession } from "./utility/userUtility/fetchUserBySession";
 import { fetchActiveCart } from "./utility/cartUtility/fetchActiveCart";
 import { fetchCartItemByCartId } from "./utility/cartItemUtility/fetchCartItemByCartId";
+import { putCartCalculateTotalPrice } from "./utility/cartUtility/putCartCalculateTotalPrice";
 
 const CartPage = () => {
   const [user, setUser] = useState(null);
 
-  const [cart, setCart] = useState(null);
-  const [loadingCart, setLoadingCart] = useState(true);
-
-  const [cartItems, setCartItems] = useState([]);
-  const [loadingCartItems, setLoadingCartItems] = useState(true);
+  const {
+    cart,
+    setCart,
+    loadingCart,
+    setLoadingCart,
+    cartItems,
+    setCartItems,
+    loadingCartItems,
+    setLoadingCartItems,
+  } = useCart();
 
   useEffect(() => {
     fetchUserBySession("IMART_SESSION", setUser);
@@ -29,10 +37,17 @@ const CartPage = () => {
 
   useEffect(() => {
     if (cart) {
-      setLoadingCart(false);
-      fetchCartItemByCartId(cart.id, setCartItems, setLoadingCartItems);
+      const fetchData = async () => {
+        try {
+          await putCartCalculateTotalPrice(cart.id, setCart);
+          await fetchCartItemByCartId(cart.id, setCartItems);
+        } finally {
+          setLoadingCart(false);
+        }
+      };
+      fetchData();
     }
-  }, [cart]);
+  }, [cart?.id]);
 
   useEffect(() => {
     if (cartItems.length > 0) {
@@ -58,7 +73,7 @@ const CartPage = () => {
           className="w-100 container d-flex flex-row gap-5 "
           style={{ paddingTop: "80px" }}
         >
-          <CartItemContainer cartItems={cartItems} />
+          <CartItemContainer />
           <PriceContainer />
         </div>
       )}

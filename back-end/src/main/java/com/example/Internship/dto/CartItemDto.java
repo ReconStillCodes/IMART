@@ -30,6 +30,7 @@ public class CartItemDto {
         this.updatedAt = updatedAt;
     }
 
+
     public Integer getId() {
         return id;
     }

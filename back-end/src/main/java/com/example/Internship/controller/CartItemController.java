@@ -40,4 +40,16 @@ public class CartItemController {
         List<CartItemDto> cartItemDtoList = cartItemService.getCartItemByCartId(cartId);
         return ResponseEntity.ok(cartItemDtoList);
     }
+
+    @PutMapping("/update-quantity/{id}")
+    public ResponseEntity<CartItemDto> updateQuantity(@PathVariable("id") Integer id,@RequestBody Integer change){
+        CartItemDto cartItemDto = cartItemService.updateQuantity(id, change);
+        return ResponseEntity.ok(cartItemDto);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteCartItem(@PathVariable("id") Integer id){
+        cartItemService.deleteCartItem(id);
+        return ResponseEntity.ok("Cart Item Successfully deleted");
+    }
 }

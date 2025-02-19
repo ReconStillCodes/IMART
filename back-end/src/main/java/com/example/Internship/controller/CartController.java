@@ -41,4 +41,10 @@ public class CartController {
         return ResponseEntity.ok(cartDto);
     }
 
+    @PutMapping("/calculate-total-price/{id}")
+    public ResponseEntity<CartDto> calculateTotalPrice(@PathVariable("id") Integer id){
+        CartDto savedCartDto = cartService.calculateTotalPrice(id);
+        return ResponseEntity.ok(savedCartDto);
+    }
+
 }
