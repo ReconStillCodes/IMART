@@ -9,7 +9,6 @@ const PriceItemContainer = ({ item }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(item.productId);
     fetchProductById(item.productId, setProduct);
   }, [item]);
 

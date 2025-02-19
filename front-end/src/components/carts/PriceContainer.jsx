@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { useCart } from "./CartContext/CartContext";
 
 import PriceItem from "./PriceComponents/PriceItem";
 import PriceDivider from "./PriceComponents/PriceDivider";
 import PriceItemContainer from "./PriceComponents/PriceItemContainer";
+import PaymentDDL from "./PriceComponents/PaymentDDL";
+
+import { putCartCalculateTotalPrice } from "../utility/cartUtility/putCartCalculateTotalPrice";
 
 const PriceContainer = () => {
-  const { cartItems } = useCart();
-  console.log(cartItems);
+  const { cart, setCart, cartItems } = useCart();
+  const [payment, setPayment] = useState(1);
 
   const totalAmount = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
-  const tax = totalAmount * 0.1; // Example: 10% tax
+  const tax = totalAmount * 0.1;
   const orderTotal = totalAmount + tax;
+
+  useEffect(() => {
+    putCartCalculateTotalPrice(cart.id, setCart);
+  }, [cartItems]);
 
   return (
     <div className="" style={{ width: "40%" }}>
@@ -35,6 +42,15 @@ const PriceContainer = () => {
         <div className="fw-bold">
           <PriceItem name="Order Total" price={orderTotal} />
         </div>
+
+        <PaymentDDL payment={payment} setPayment={setPayment} />
+
+        <button
+          className="btn btn-primary w-100 p-2 fw-bold"
+          style={{ backgroundColor: "black" }}
+        >
+          Check Out
+        </button>
       </div>
     </div>
   );
