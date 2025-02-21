@@ -7,6 +7,9 @@ import com.example.Internship.exception.ResourceNotFoundException;
 import com.example.Internship.mapper.ProductMapper;
 import com.example.Internship.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,22 +35,46 @@ public class ProductService {
         return productMapper.mapToProductDto(product);
     }
 
-    public List<ProductDto> getAllProducts(){
-        List<Product> productList = repo.findAll();
-        return productList.stream().map((product) -> productMapper.mapToProductDto(product)).collect(Collectors.toList());
+    public List<ProductDto> getAllProducts(int page, int size) {
+        Page<Product> productPage = repo.findAll(PageRequest.of(page, size));
+        return productPage.getContent()
+                .stream()
+                .map(productMapper::mapToProductDto)
+                .collect(Collectors.toList());
     }
 
-    public List<ProductDto> searchProduct(SearchingProductRequest request){
-        List<Product> productList = null;
+    public List<ProductDto> searchProduct(int page, int size, SearchingProductRequest request){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage;
         request.validateRequest();
 
-        if(request.getCategoryId() == 0){
-            productList = repo.findByNameContainingIgnoreCaseAndPriceBetween(request.getName(), request.getMinPrice(), request.getMaxPrice());
-        }else{
-            productList = repo.findByNameContainingIgnoreCaseAndPriceBetweenAndCategoryId(request.getName(), request.getMinPrice(), request.getMaxPrice(), request.getCategoryId());
+        if (request.getCategoryId() == 0) {
+            productPage = repo.searchProductsWithoutCategory(
+                    request.getName(), request.getMinPrice(), request.getMaxPrice(), pageable
+            );
+        } else {
+            productPage = repo.searchProductsWithCategory(
+                    request.getName(), request.getMinPrice(), request.getMaxPrice(), request.getCategoryId(), pageable
+            );
         }
 
-        return productList.stream().map((product) -> productMapper.mapToProductDto(product)).collect(Collectors.toList());
+        return productPage.getContent()
+                .stream()
+                .map(productMapper::mapToProductDto)
+                .collect(Collectors.toList());
+    }
+
+    public int countSerachProduct(SearchingProductRequest request, int size){
+        request.validateRequest();
+        int count = 0;
+
+        if (request.getCategoryId() == 0) {
+            count = repo.countProductsWithoutCategory(request.getName(), request.getMinPrice(), request.getMaxPrice());
+        }else{
+            count = repo.countProductsWithCategory(request.getName(), request.getMinPrice(), request.getMaxPrice(), request.getCategoryId());
+        }
+
+        return (int) Math.ceil((double) count / size) - 1;
     }
 
     public ProductDto updateProduct(Integer id, ProductDto productDto){
@@ -68,5 +95,9 @@ public class ProductService {
         repo.delete(product);
     }
 
+    public int getTotalPage(Integer size){
+        int count = (int) repo.count();
+        return (int) Math.ceil((double) count / size) - 1;
+    }
 
 }

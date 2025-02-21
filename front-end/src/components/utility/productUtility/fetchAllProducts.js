@@ -1,6 +1,8 @@
-export const fetchAllProducts = async (setProducts, setLoading) => {
+export const fetchAllProducts = async (setProducts, setLoading, page) => {
   try {
-    const response = await fetch("http://localhost:8080/api/products");
+    const response = await fetch(
+      `http://localhost:8080/api/products/page/${page}/size/20`
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }

@@ -1,16 +1,13 @@
-export const postProductSearch = async (
+export const postTotalPageProductSearch = async (
   name,
   minPrice,
   maxPrice,
   categoryId,
-  setProducts,
-  setLoading,
-  page
+  setTotalPage
 ) => {
   try {
-    setLoading(true);
     const response = await fetch(
-      `http://localhost:8080/api/products/search/${page}/20`,
+      `http://localhost:8080/api/products/search/count/20`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -19,14 +16,12 @@ export const postProductSearch = async (
     );
 
     if (!response.ok) {
-      throw new Error("Error fetching search products");
+      throw new Error("Error fetching Total Page Search Products");
     }
 
     const data = await response.json();
-    setProducts(data);
+    setTotalPage(data);
   } catch (err) {
-    console.error("Error fetching search products: ", err);
-  } finally {
-    setLoading(false);
+    console.error("Error fetching Total Page Search Products: ", err);
   }
 };
