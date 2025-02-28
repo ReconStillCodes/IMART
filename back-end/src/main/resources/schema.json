@@ -1,0 +1,748 @@
+{
+  "tables" : {
+    "users": {
+      "name": "users",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "username",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "email",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL", "UNIQUE"]
+        },
+        {
+          "name": "password",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "address",
+          "type": "varchar(255)",
+          "constraints": ["DEFAULT NULL"]
+        },
+        {
+          "name": "role",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "UNIQUE",
+          "name": "email_UNIQUE",
+          "columns": ["email"]
+        }
+      ]
+    },
+    "payments": {
+      "name": "payments",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL", "UNIQUE"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "UNIQUE",
+          "name": "name_UNIQUE",
+          "columns": ["name"]
+        }
+      ]
+
+    },
+    "product_categories": {
+      "name": "product_categories",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL", "UNIQUE"]
+        },
+        {
+          "name": "description",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "UNIQUE",
+          "name": "name_UNIQUE",
+          "columns": ["name"]
+        }
+      ]
+    },
+    "promotion_categories": {
+      "name": "promotion_categories",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL", "UNIQUE"]
+        },
+        {
+          "name": "description",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "UNIQUE",
+          "name": "name_UNIQUE",
+          "columns": ["name"]
+        }
+      ]
+    },
+    "products": {
+      "name": "products",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL", "UNIQUE"]
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "category_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "price",
+          "type": "double",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "stock",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "image_url",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "UNIQUE",
+          "name": "name_UNIQUE",
+          "columns": ["name"]
+        },
+        {
+          "type": "KEY",
+          "name": "category_id",
+          "columns": ["category_id"]
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "products_ibfk_1",
+          "column": "category_id",
+          "references": {
+            "table": "product_categories",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        }
+      ]
+    },
+    "promotions": {
+      "name": "promotions",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "description",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "discount_value",
+          "type": "double",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "status",
+          "type": "varchar(255)",
+          "constraints": ["DEFAULT NULL"]
+        },
+        {
+          "name": "start_date",
+          "type": "datetime",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "end_date",
+          "type": "datetime",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "category_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "KEY",
+          "name": "category_id",
+          "columns": ["category_id"]
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "promotions_ibfk_1",
+          "column": "category_id",
+          "references": {
+            "table": "promotion_categories",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        }
+      ]
+    },
+    "promotion_items": {
+      "name": "promotion_items",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "promotion_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "product_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "quantity",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "KEY",
+          "name": "promotion_id",
+          "columns": ["promotion_id"]
+        },
+        {
+          "type": "KEY",
+          "name": "product_id",
+          "columns": ["product_id"]
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "promotion_items_ibfk_1",
+          "column": "promotion_id",
+          "references": {
+            "table": "promotions",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        },
+        {
+          "name": "promotion_items_ibfk_2",
+          "column": "product_id",
+          "references": {
+            "table": "products",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        }
+      ]
+    },
+    "reviews": {
+      "name": "reviews",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "user_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "product_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "rating",
+          "type": "int",
+          "constraints": ["NOT NULL", "CHECK (`rating` BETWEEN 1 AND 5)"]
+        },
+        {
+          "name": "title",
+          "type": "varchar(255)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "comment",
+          "type": "varchar(1000)",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "KEY",
+          "name": "user_id",
+          "columns": ["user_id"]
+        },
+        {
+          "type": "KEY",
+          "name": "product_id",
+          "columns": ["product_id"]
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "reviews_ibfk_1",
+          "column": "user_id",
+          "references": {
+            "table": "users",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        },
+        {
+          "name": "reviews_ibfk_2",
+          "column": "product_id",
+          "references": {
+            "table": "products",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "name": "reviews_chk_1",
+          "type": "CHECK",
+          "condition": "`rating` BETWEEN 1 AND 5"
+        }
+      ]
+    },
+    "carts": {
+      "name": "carts",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "user_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "total_price",
+          "type": "double",
+          "constraints": ["DEFAULT NULL"]
+        },
+        {
+          "name": "status",
+          "type": "varchar(255)",
+          "constraints": ["DEFAULT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "KEY",
+          "name": "user_id",
+          "columns": ["user_id"]
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "carts_ibfk_1",
+          "column": "user_id",
+          "references": {
+            "table": "users",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        }
+      ]
+    },
+    "cart_items": {
+      "name": "cart_items",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "cart_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "product_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "quantity",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "total_price",
+          "type": "double",
+          "constraints": ["DEFAULT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "unique_keys": [
+        {
+          "name": "cart_id",
+          "columns": ["cart_id", "product_id"]
+        }
+      ],
+      "indexes": [
+        {
+          "type": "KEY",
+          "name": "product_id",
+          "columns": ["product_id"]
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "cart_items_ibfk_1",
+          "column": "cart_id",
+          "references": {
+            "table": "carts",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        },
+        {
+          "name": "cart_items_ibfk_2",
+          "column": "product_id",
+          "references": {
+            "table": "products",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        }
+      ]
+    },
+    "orders": {
+      "name": "orders",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "user_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "total_price",
+          "type": "double",
+          "constraints": ["DEFAULT NULL"]
+        },
+        {
+          "name": "status",
+          "type": "varchar(255)",
+          "constraints": ["DEFAULT NULL"]
+        },
+        {
+          "name": "payment_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "KEY",
+          "name": "user_id",
+          "columns": ["user_id"]
+        },
+        {
+          "type": "KEY",
+          "name": "payment_id",
+          "columns": ["payment_id"]
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "orders_ibfk_1",
+          "column": "user_id",
+          "references": {
+            "table": "users",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        },
+        {
+          "name": "orders_ibfk_2",
+          "column": "payment_id",
+          "references": {
+            "table": "payments",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        }
+      ]
+    },
+    "order_items": {
+      "name": "order_items",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "constraints": ["NOT NULL", "AUTO_INCREMENT"]
+        },
+        {
+          "name": "product_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "order_id",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "quantity",
+          "type": "int",
+          "constraints": ["NOT NULL"]
+        },
+        {
+          "name": "total_price",
+          "type": "double",
+          "constraints": ["DEFAULT NULL"]
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP", "ON UPDATE CURRENT_TIMESTAMP"]
+        }
+      ],
+      "primary_key": "id",
+      "indexes": [
+        {
+          "type": "KEY",
+          "name": "product_id",
+          "columns": ["product_id"]
+        },
+        {
+          "type": "KEY",
+          "name": "order_id",
+          "columns": ["order_id"]
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "order_items_ibfk_1",
+          "column": "product_id",
+          "references": {
+            "table": "products",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        },
+        {
+          "name": "order_items_ibfk_2",
+          "column": "order_id",
+          "references": {
+            "table": "orders",
+            "column": "id",
+            "on_delete": "CASCADE"
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "name": "order_items_chk_1",
+          "check": "quantity > 0"
+        }
+      ]
+    }
+  }
+}

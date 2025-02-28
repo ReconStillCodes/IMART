@@ -1,0 +1,215 @@
+[
+  {
+    "tableName": "users",
+    "fields": [
+      "id",
+      "username",
+      "email",
+      "password",
+      "address",
+      "role",
+      "created_at",
+      "updated_at"
+    ],
+    "purpose": "Stores information about registered users, including customers and administrators."
+  },
+  {
+    "tableName": "payments",
+    "fields": ["id", "name", "created_at", "updated_at"],
+    "purpose": "Stores payment methods available in the system."
+  },
+  {
+    "tableName": "product_categories",
+    "fields": ["id", "name", "description", "created_at", "updated_at"],
+    "purpose": "Stores product categories to organize inventory."
+  },
+  {
+    "tableName": "promotion_categories",
+    "fields": ["id", "name", "description", "created_at", "updated_at"],
+    "purpose": "Stores different types of promotional categories"
+  },
+  {
+    "tableName": "products",
+    "fields": [
+      "id",
+      "name",
+      "description",
+      "category_id",
+      "price",
+      "stock",
+      "image_url",
+      "created_at",
+      "updated_at"
+    ],
+    "relationships": [
+      {
+        "field": "category_id",
+        "tableReference": "product_categories",
+        "fieldReference": "id"
+      }
+    ],
+    "purpose": "Stores details of all available products."
+  },
+  {
+    "tableName": "promotions",
+    "fields": [
+      "id",
+      "name",
+      "description",
+      "discount_value",
+      "status",
+      "start_date",
+      "end_date",
+      "category_id",
+      "created_at",
+      "updated_at"
+    ],
+    "relationships": [
+      {
+        "field": "category_id",
+        "tableReference": "promotion_categories",
+        "fieldReference": "id"
+      }
+    ],
+    "purpose": "Stores information about ongoing promotions."
+  },
+  {
+    "tableName": "promotion_items",
+    "fields": [
+      "id",
+      "promotion_id",
+      "product_id",
+      "quantity",
+      "created_at",
+      "updated_at"
+    ],
+    "relationships": [
+      {
+        "field": "promotion_id",
+        "tableReference": "promotions",
+        "fieldReference": "id"
+      },
+      {
+        "field": "product_id",
+        "tableReference": "products",
+        "fieldReference": "id"
+      }
+    ],
+    "purpose": "Stores products associated with specific promotions."
+  },
+  {
+    "tableName": "reviews",
+    "fields": [
+      "id",
+      "user_id",
+      "product_id",
+      "rating",
+      "title",
+      "comment",
+      "created_at",
+      "updated_at"
+    ],
+    "relationships": [
+      {
+        "field": "user_id",
+        "tableReference": "users",
+        "fieldReference": "id"
+      },
+      {
+        "field": "product_id",
+        "tableReference": "products",
+        "fieldReference": "id"
+      }
+    ],
+    "purpose": "Stores user reviews and ratings for products."
+  },
+  {
+    "tableName": "carts",
+    "fields": [
+      "id",
+      "user_id",
+      "total_price",
+      "status",
+      "created_at",
+      "updated_at"
+    ],
+    "relationships": [
+      {
+        "field": "user_id",
+        "tableReference": "users",
+        "fieldReference": "id"
+      }
+    ],
+    "purpose": "Stores shopping cart details for users."
+  },
+  {
+    "tableName": "cart_items",
+    "fields": [
+      "id",
+      "cart_id",
+      "product_id",
+      "quantity",
+      "total_price",
+      "created_at",
+      "updated_at"
+    ],
+    "relationships": [
+      {
+        "field": "user_id",
+        "tableReference": "users",
+        "fieldReference": "id"
+      },
+      {
+        "field": "product_id",
+        "tableReference": "products",
+        "fieldReference": "id"
+      }
+    ],
+    "purpose": "Stores individual products within a shopping cart."
+  },
+  {
+    "tableName": "orders",
+    "fields": [
+      "id",
+      "user_id",
+      "total_price",
+      "status",
+      "payment_id",
+      "created_at",
+      "updated_at"
+    ],
+    "relationships": [
+      {
+        "field": "user_id",
+        "tableReference": "users",
+        "fieldReference": "id"
+      }
+    ],
+    "purpose": "Stores order details placed by users."
+  },
+  {
+    "tableName": "order_items",
+    "fields": [
+      "id",
+      "product_id",
+      "order_id",
+      "quantity",
+      "total_price",
+      "created_at",
+      "updated_at"
+    ],
+    "relationships": [
+      {
+        "field": "product_id",
+        "tableReference": "products",
+        "fieldReference": "id"
+      },
+      {
+        "field": "order_id",
+        "tableReference": "orders",
+        "fieldReference": "id"
+      }
+    ],
+    "purpose": "Stores details of individual products within an order."
+  }
+]
