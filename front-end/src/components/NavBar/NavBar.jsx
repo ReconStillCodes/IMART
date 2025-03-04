@@ -47,12 +47,14 @@ const NavBar = ({ activePage }) => {
             activePage={activePage}
           />
 
-          <NavBarLink
-            label="Products"
-            path="/products"
-            page="products"
-            activePage={activePage}
-          />
+          {userData && userData.role === "user" && (
+            <NavBarLink
+              label="Products"
+              path="/products"
+              page="products"
+              activePage={activePage}
+            />
+          )}
 
           {userData && userData.role === "user" && (
             <NavBarLink
