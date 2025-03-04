@@ -160,19 +160,6 @@ const ProductsPage = () => {
             </div>
           ))}
         </div>
-        {/* {products.length > 0 ? (
-          <div className="row">
-            {products.map((product) => (
-              <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={product.id}>
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center">
-            <img src={emptyBoxImage} alt="No products found" />
-          </div>
-        )} */}
 
         {/* Pagination */}
         <div className="w-100 d-flex justify-content-end align-items-center gap-2">
